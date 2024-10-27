@@ -38,7 +38,7 @@ passport.deserializeUser((user, done) => {
 passport.use(new GoogleStrategy({
     clientID: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    callbackURL: "https://localhost:3000/auth/google/callback"
+    callbackURL: "https://secret.westeurope.cloudapp.azure.com/auth/google/callback"
 }, (accessToken, refreshToken, profile, done) => {
     return done(null, profile);
 }));
@@ -446,11 +446,11 @@ app.post('/api/files/decrypt', express.json(), async (req, res) => {
 
 // Read the certificate and key files
 const options = {
-    key: fs.readFileSync('localhost-key.pem'),
-    cert: fs.readFileSync('localhost.pem')
+    key: fs.readFileSync('/etc/ssl/private/secret.westeurope.cloudapp.azure.com.key'),
+    cert: fs.readFileSync('/etc/ssl/certs/secret.westeurope.cloudapp.azure.com.crt')
 };
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 443;  // Change port to 443
 https.createServer(options, app).listen(PORT, () => {
-    console.log(`Server is running on https://localhost:${PORT}`);
+    console.log(`Server is running on https://secret.westeurope.cloudapp.azure.com`);
 });
